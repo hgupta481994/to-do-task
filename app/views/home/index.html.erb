@@ -1,93 +1,98 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-    box-sizing: border-box;
-}
-
-thead,tbody { display: block; }
-
-tbody {
-    height: 400px;       /* Just for the demo          */
-    overflow-y: auto;    /* Trigger vertical scroll    */
-   overflow-x:auto ; 
-}
-
-table {
-	
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #ddd;
-}
-
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-body {
-    margin: 0;
-}
-
-/* Create two equal columns that floats next to each other */
-.column {
-    float: left;
-    width: 50%;
-    padding: 10px;
-    height: 400px; 
-}
-
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-</style>
-</head>
-<body>
-
 <h1>Welcome</h1>
 
-<% if (current_user.present? && current_user.is_admin? == false ) %>
-	<div class="row">
-	  <div class="column" style="background-color:#ddd;width:50%;" >
-	    <h2>Tasks</h2>
-	    <div>
-  			<table >
-			    <tr>
-			      <th>Task Name</th>
-			      <!-- <th>Assigned to</th> -->
-			      <th>End Date</th>
-			      <th>Status</th>
-			     </tr>
-			     <% @tasks.each do |t| %>
-				  <tr>
-				   <td><%= t.name %>
-				    
-				    <td><%= t.end %></td>
-				    <td><%= t.status %></td>
-				  </tr>
-				  <% end %>
-			</table>
-		</div>
-	  </div>
-	  <% if current_user.is_tlead? %>
-		<div class="column" style="background-color:#eee;width:45%;">
-		    <h2>Employees</h2>
-		    <p>  </p>
-		</div>
-	  <%end%>
-	 
-	</div>
-	<% elsif  (current_user.present? && current_user.is_admin? == true) %>
+<% if (current_user.present? )%> 
+	<%if (current_user.is_admin? == true ) %>
 		<%= link_to " View reports ","/action" %>
-	<% else %>
-		<p> Please login to continue </p>
+	<%elsif (current_user.is_tlead? == true ) %>
+
+		<div class="row">
+		  <div class="column" style="background-color:#eee;width:50%;" >
+		    <h2>Tasks</h2>
+		    <div>
+		    	<%= form_tag Assign_t_multiple_path,  method: :get do %>
+		  			<table >
+					    <tr>
+					      <th></th>
+					      <th>Task Name</th>
+					      <th>Assigned Date</th>
+					      <th>Assigned to </th>
+					      <th>End Date</th>
+					      <th>Status</th>
+					    </tr>
+					    <% @tasks.each do |t| %>
+					    	<%if (t.teamlead_id == current_user.id) %> 
+						  		<tr>
+						  			<td><%= check_box_tag "tasks_ids[]", t.id %>
+							    	<td><%= t.name %>
+							    	<td><%= t.updated_at %>
+							    	<% if t.user_id != nil %>
+							    		<td><%= User.find(t.user_id).username%></td>
+							    	<% else %>
+							    		<td>Not assigned </td>
+							    	<%end%>
+								    <td><%= t.end %></td>
+								    <td><% if(t.status==false)%>
+									    	<%= "not done" %>
+									    	<%else%>
+									    	<%= "done" %>
+								    	<%end%>
+							    	</td>
+								</tr>
+							<% end %>
+						<% end %>
+					</table>
+					<%= submit_tag "Assign Task" %>
+				<% end%>
+			</div>
+		  </div>
+
+		  <div class="column" style="background-color:#fff;width:40%;">
+			<h2>Employees under you </h2>
+			<table >
+				<tr>
+			      <th>Users</th>
+			      <th></th>
+			    </tr>
+				<% for u in @users %>
+					<tr>
+						<% if u.teamlead_id? == current_user.id %>
+							<td><%= u.username %> </td>
+						<% end %>
+					</tr>
+				<% end %>
+			</table>
+		  </div>
+		</div>
+
+	<%else%>
+		<div class="row">
+		  <div class="column" style="background-color:#ddd;width:50%;" >
+		    <h2>Tasks</h2>
+		    <div>
+	  			<table >
+				    <tr>
+				      <th>Task Name</th>
+				      <th>Assigned Date</th>
+				      <th>End Date</th>
+				      <th>Status</th>
+				    </tr>
+				    <% @tasks.each do |t| %>
+				    	<%if (t.user_id == current_user.id) %> 
+					  		<tr>
+						    	<td><%= t.name %>
+						    	<td><%= t.updated_at %>
+							    <td><%= t.end %></td>
+							    <td><%= t.status %></td>
+							</tr>
+						<% end %>
+					 <% end %>
+				</table>
+			</div>
+		  </div>
+		</div> 
+	<% end %>
+<%else%>
+	<p> Please login to continue </p>
 <% end %>
 
 </body>
