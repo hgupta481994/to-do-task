@@ -1,0 +1,17 @@
+<%= form_for @task do |t| %>
+		<%= t.label :task_name %><br>
+		<%= t.text_field :name %> <br>
+		<br>
+		<%= t.label :description_of_task %><br>
+		<%= t.text_area :description %><br>
+		<br>
+		<%= t.label :start_date %><br>
+		<%= t.date_select :start %><br>
+		<br>
+		<br>
+		<%= t.label :end_date %><br>
+		<%= t.date_select :end %><br>
+		<br>
+		<%=t.collection_select(:User, :teamlead_id, User.all, :id)
+		<%= t.submit "Create" %>
+<% end %>

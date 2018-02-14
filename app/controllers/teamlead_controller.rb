@@ -1,0 +1,2 @@
+class TeamleadController < ApplicationController
+end

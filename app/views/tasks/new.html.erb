@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+<style>
+</style>
+
+
+    
+    
+	
+</head>
+<body>
+
+<h1> New Task </h1>
+
+<%= simple_form_for @task do |t| %>
+		<%= t.input :name, label: "Task name" %><br>
+		
+		<%= t.input :description, label: "Description of task" %><br>
+		
+		<%= t.input :start %><br>
+		
+		<%= t.input :end %><br>
+
+		<%= t.collection_select :user_id, User.all, :id, :username, include_blank: true %><br>
+		
+		<%= t.button :submit %>
+<% end %>

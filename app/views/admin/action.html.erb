@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+thead,tbody { display: block; }
+
+tbody {
+    height: 400px;       /* Just for the demo          */
+    overflow-y: auto;    /* Trigger vertical scroll    */
+   overflow-x:auto ; 
+}
+
+table {
+	
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+body {
+    margin: 0;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 500px; 
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+</style>
+</head>
+<body>
+
+<h1> Hello admin </h1>
+<%= link_to " New Task ","/new" %><br>
+<%= link_to " Make Team Lead ","/action/tlead" %>
+<div class="row">
+	  <div class="column" style="background-color:#ddd; width:60%;" >
+	    <h2>Tasks</h2>
+	    <div >
+	    	<%= form_tag edit_multiple_admin_index_path,  method: :get do %> 
+	  			<table >
+				    <tr>
+				      <th></th>
+				      <th>Task Name</th>
+				      <th>Assigned to</th> 
+				      <th>Assigned date </th>
+				      <th>To be done upto</th>
+				      <th>Status</th>
+				     </tr>
+				     <%  for t in @tasks %>
+					  <tr>
+					  	<td><%= check_box_tag "tasks_ids[]", t.id %>
+					    <td><%= t.name %></td>
+					    <% if t.teamlead_id != nil %> 	
+					    	<td><%= Teamlead.find(t.teamlead_id).username%></td>
+					    	<td><%= t.start %></td>
+					    <% else %>
+					    	<td> Not Assigned </td>
+					    	<td> Not Assigned </td>
+					    <% end %>
+					    
+					    <td><%= t.end %></td>
+					    <td><% if(t.status==false)%>
+					    	<%= "not done" %>
+					    	<%else%>
+					    	<%= "done" %>
+					    	<%end%>
+					    </td>
+					  </tr>
+					  <% end %>
+				</table>
+				<%= submit_tag "Edit Task" %>
+			<% end %>
+
+
+		</div>
+	  </div>
+		<div class="column" style="background-color:#eee;width:35%;">
+		    <h2>Team Lead</h2>
+		    <table >
+				    <tr>
+				      <th></th>
+				      <th>Team Lead</th>
+				
+				     </tr>
+				     <%  for t in @tleads %>
+					  <tr>
+					  	<!--<td><%=  check_box_tag "teamlead_ids[]", t.id %></td>-->
+					  	<td><%= t.username %></td>
+					  </tr>
+					  <% end %>
+			</table>
+		</div>
+</div>
+<p> </p>

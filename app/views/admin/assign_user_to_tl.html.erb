@@ -1,0 +1,31 @@
+<h3> Hello Admin, Assign employees to <%= @tl.username%> </h3>
+<h4> Following are the available employees </h4>
+
+	<div >
+	    <%= form_tag assign_multiple_user_admin_index_path,  method: :put do %> 
+	  		<table >
+			    <tr>
+			      <th></th>
+			      <th>User Name</th>
+				</tr>
+				<%  for u in @users %>
+					<tr>
+						<% if u.teamlead_id == 1 && u.tlead==false%> 	
+							<td><%= check_box_tag "user_ids[]", u.id %>
+					    	<td><%= u.username%></td>
+					    <% end %>
+				<% end %>
+			</table>
+			<%= hidden_field_tag(:tid, @tl.id) %>
+			<%= submit_tag "Assign" %>
+		<% end %>
+	</div>
+
+
+
+
+
+
+
+
+
