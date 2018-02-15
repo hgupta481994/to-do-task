@@ -1,0 +1,5 @@
+@tasks.each do |t|
+			@tu=Tasks.find(t)
+			@tu.status= !@tu.status
+			@tu.save
+		end

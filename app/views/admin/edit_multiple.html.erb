@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 
-</style>
-	
-	
-
-    
-    
-	
-</head>
-<body>
 
 <h1> Edit Task </h1>
 
@@ -33,7 +18,7 @@
 			
 			<%= t.label :end_date %><br>
 			<%= t.date_select :end %><br>
-			<%= t.collection_select :teamlead_id, Teamlead.all, :id, :username, prompt: true %>
+			<%= t.collection_select :teamlead_id, Teamlead.all, :id, :username, prompt: " select team leader " %>
 
 			<br>
 		<% end %>

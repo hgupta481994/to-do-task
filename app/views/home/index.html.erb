@@ -6,13 +6,14 @@
 	<%elsif (current_user.is_tlead? == true ) %>
 
 		<div class="row">
-		  <div class="column" style="background-color:#eee;width:50%;" >
+		  <div class="column" style="background-color:#eee;width:70%;" >
 		    <h2>Tasks</h2>
 		    <div>
-		    	<%= form_tag Assign_t_multiple_path,  method: :get do %>
+		    	<%= form_tag assign_t_multiple_update_teamlead_index_path,  method: :put do %>
 		  			<table >
 					    <tr>
 					      <th></th>
+					      <th>Task ID</th>
 					      <th>Task Name</th>
 					      <th>Assigned Date</th>
 					      <th>Assigned to </th>
@@ -22,10 +23,11 @@
 					    <% @tasks.each do |t| %>
 					    	<%if (t.teamlead_id == current_user.id) %> 
 						  		<tr>
-						  			<td><%= check_box_tag "tasks_ids[]", t.id %>
+						  			<td><%= check_box_tag "tasks_ids[]", t.id %></td>
+						  			<td><%=t.id%></td>
 							    	<td><%= t.name %>
 							    	<td><%= t.updated_at %>
-							    	<% if t.user_id != nil %>
+							    	<% if t.user_id != 1 %>
 							    		<td><%= User.find(t.user_id).username%></td>
 							    	<% else %>
 							    		<td>Not assigned </td>
@@ -41,12 +43,16 @@
 							<% end %>
 						<% end %>
 					</table>
-					<%= submit_tag "Assign Task" %>
+					<% if (@cu != nil) %>
+						<%= select_tag(:employee, options_from_collection_for_select(@cu, "id", "username")) %>
+						<%#collection_select(:employee, User.all,  :id, :username, prompt: " select user to assign ") %>
+						<%= submit_tag "Assign Task" %>
+					<%end%>
 				<% end%>
 			</div>
 		  </div>
 
-		  <div class="column" style="background-color:#fff;width:40%;">
+		  <div class="column" style="background-color:#fff;width:25%;">
 			<h2>Employees under you </h2>
 			<table >
 				<tr>
@@ -55,7 +61,7 @@
 			    </tr>
 				<% for u in @users %>
 					<tr>
-						<% if u.teamlead_id? == current_user.id %>
+						<% if u.teamlead_id == current_user.id %>
 							<td><%= u.username %> </td>
 						<% end %>
 					</tr>
@@ -65,28 +71,43 @@
 		</div>
 
 	<%else%>
+		<h5> You are under <%=Teamlead.find(current_user.teamlead_id).username %></h5>
 		<div class="row">
-		  <div class="column" style="background-color:#ddd;width:50%;" >
+		  <div class="column" style="background-color:#ddd;width:70%;" >
 		    <h2>Tasks</h2>
 		    <div>
-	  			<table >
-				    <tr>
-				      <th>Task Name</th>
-				      <th>Assigned Date</th>
-				      <th>End Date</th>
-				      <th>Status</th>
-				    </tr>
-				    <% @tasks.each do |t| %>
-				    	<%if (t.user_id == current_user.id) %> 
-					  		<tr>
-						    	<td><%= t.name %>
-						    	<td><%= t.updated_at %>
-							    <td><%= t.end %></td>
-							    <td><%= t.status %></td>
-							</tr>
-						<% end %>
-					 <% end %>
-				</table>
+		    	<%= form_tag done_t_multiple_update_employee_index_path,  method: :put do %>
+		  			<table >
+					    <tr>
+					      <th> </th>
+					      <th>Task ID </td>
+					      <th>Task Name</th>
+					      <th>Assigned Date</th>
+					      <th>End Date</th>
+					      <th>Status</th>
+					    </tr>
+
+					    <% @tasks.each do |t| %>
+					    	<%if (t.user_id == current_user.id) %> 
+						  		<tr>
+						  			<td><%= check_box_tag "tasks_ids[]", t.id %></td>
+						  			
+						  			<td><%= t.id   %>
+							    	<td><%= t.name %>
+							    	<td><%= t.updated_at %>
+								    <td><%= t.end %></td>
+								    <td><% if(t.status==false)%>
+									    	<%= check_box_tag "stat", "1", t.status, disabled: true %> Not Done
+									    	<%else%>
+									    	<%= check_box_tag "stat", "0", t.status, disabled: true  %> Done
+								    	<%end%>
+							    	</td>
+								</tr>
+							<% end %>
+						 <% end %>
+					</table>
+					<%= submit_tag "Toggle Task" %>
+				<% end%>
 			</div>
 		  </div>
 		</div> 

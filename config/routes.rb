@@ -28,6 +28,19 @@ Rails.application.routes.draw do
       put :assign_multiple_user
     end
   end
+
+  resources :teamlead do
+    collection do
+      put :assign_t_multiple_update
+    end
+  end
+
+  resources :employee do
+    collection do
+      put :done_t_multiple_update
+    end
+  end
+
   
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
