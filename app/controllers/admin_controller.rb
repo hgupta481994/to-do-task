@@ -1,13 +1,12 @@
 class AdminController < ApplicationController
 
 	
-	
- 	before_action :authenticate_user!, except:[:index, :show] 
+	 
   def action
   	@tasks= Task.all.order("created_at DESC")
   	@tleads= Teamlead.all.order("created_at DESC")
-  	authorize! :read, @users
-  	authorize! :read, @tasks
+    @users= User.all.order("created_at DESC")
+  	
   end
 
   def tlead

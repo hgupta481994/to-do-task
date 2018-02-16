@@ -24,7 +24,7 @@
 		
 		<%= t.input :end %><br>
 
-		<%= t.collection_select :user_id, User.all, :id, :username, include_blank: true %><br>
+		<%= t.collection_select :user_id, Teamlead.all, :id, :username, include_blank: true %><br>
 		
 		<%= t.button :submit %>
 <% end %>

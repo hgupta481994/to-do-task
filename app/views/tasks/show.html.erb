@@ -1,0 +1,20 @@
+<table>
+	<tr>
+						  			
+						  			<td><%=@task.id%></td>
+							    	<td><%= @task.name %>
+							    	<td><%= @task.updated_at %>
+							    	<% if @task.user_id != 1 %>
+							    		<td><%= User.find(@task.user_id).username%></td>
+							    	<% else %>
+							    		<td>Not assigned </td>
+							    	<%end%>
+								    <td><%= @task.end %></td>
+								    <td><% if(@task.status==false)%>
+									    	<%= "not done" %>
+									    	<%else%>
+									    	<%= "done" %>
+								    	<%end%>
+							    	</td>
+								</tr>
+</table>

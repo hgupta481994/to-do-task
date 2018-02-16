@@ -3,7 +3,7 @@
 <h1>Team lead section</h1>
 <br>
 <div class="row">
-	<div class="column" style="background-color:#fff;width:30%;">
+	<div class="column" style="background-color:#fff;width:50%;">
 		<h2>Team Leads assigned</h2>
 		<table >
 			<tr>
@@ -14,6 +14,7 @@
 					<% if (t.username != 'admin') %>
 						<td><%= t.username %></td>
 						<td><%= link_to 'Assign users to TL', assign_user_path(t) %>
+						<td><%= link_to 'Not a Team Lead'  , teamlead_path(t), method: :delete, data: {confirm: "Are you sure?"} %>   </td>
 					<% end %>
 				</tr>
 			<% end %>
@@ -34,6 +35,10 @@
 								<td><%= u.username %> </td>
 								<td>Assigned to <%=Teamlead.find(u.teamlead_id).username %></td>
 								<td><%= link_to " Make Team Lead ", tlead_multiple_path(u), method: :patch %>
+								<td><%= link_to 'Delete Employee'  , employee_path(u), method: :delete, data: {confirm: "Are you sure?"} %>   </td>
+								<% if u.teamlead_id == 1 %>
+									<td> Not under any TL </td>
+								<%end%>
 						 	<% end %>
 						</tr>
 				<% end %>

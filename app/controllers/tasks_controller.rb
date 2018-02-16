@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
 
-	load_and_authorize_resource
+	# load_and_authorize_resource
 	before_action :find_task, only: [:show, :edit, :update, :destroy]
- 	before_action :authenticate_user!, except:[:index, :show] 
+ 	
   def index
   	@tasks= Task.all.order("created_at DESC").paginate(page: params[:page], per_page: 5) 
   	end
@@ -45,7 +45,7 @@ def create
   def destroy
   	
   	@task.destroy
-  	redirect_to '/home'
+  	redirect_to 'root'
   end
 
 

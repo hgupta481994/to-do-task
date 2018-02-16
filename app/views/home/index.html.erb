@@ -21,7 +21,8 @@
 					      <th>Status</th>
 					    </tr>
 					    <% @tasks.each do |t| %>
-					    	<%if (t.teamlead_id == current_user.id) %> 
+					    	<% @tl= Teamlead.find_by_username(current_user.username) %>
+					    	<%if (t.teamlead_id == @tl.id) %> 
 						  		<tr>
 						  			<td><%= check_box_tag "tasks_ids[]", t.id %></td>
 						  			<td><%=t.id%></td>
@@ -61,7 +62,8 @@
 			    </tr>
 				<% for u in @users %>
 					<tr>
-						<% if u.teamlead_id == current_user.id %>
+						<% @tl= Teamlead.find_by_username(current_user.username) %>
+						<% if u.teamlead_id == @tl.id %>
 							<td><%= u.username %> </td>
 						<% end %>
 					</tr>

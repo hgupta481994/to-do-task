@@ -1,25 +1,45 @@
 <h3> Hello Admin, Assign employees to <%= @tl.username%> </h3>
-<h4> Following are the available employees </h4>
+<div class="row">
+	<div class="column" style="background-color:#fff;width:50%;">
+		<h4> Following are the available employees </h4>
 
-	<div >
-	    <%= form_tag assign_multiple_user_admin_index_path,  method: :put do %> 
-	  		<table >
-			    <tr>
+			<div >
+			    <%= form_tag assign_multiple_user_admin_index_path,  method: :put do %> 
+			  		<table >
+					    <tr>
+					      <th></th>
+					      <th>User Name</th>
+						</tr>
+						<%  for u in @users %>
+							<tr>
+								<% if u.teamlead_id == 1 && u.tlead==false%> 	
+									<td><%= check_box_tag "user_ids[]", u.id %>
+							    	<td><%= u.username%></td>
+							    <% end %>
+						<% end %>
+					</table>
+					<%= hidden_field_tag(:tid, @tl.id) %>
+					<%= submit_tag "Assign" %>
+				<% end %>
+			</div>
+	</div>
+	<div class="column" style="background-color:#fff;width:48%;">
+			<h4>Employees under this TL </h4>
+			<table >
+				<tr>
+			      <th>Employee</th>
 			      <th></th>
-			      <th>User Name</th>
-				</tr>
-				<%  for u in @users %>
+			    </tr>
+				<% for u in @users %>
 					<tr>
-						<% if u.teamlead_id == 1 && u.tlead==false%> 	
-							<td><%= check_box_tag "user_ids[]", u.id %>
-					    	<td><%= u.username%></td>
-					    <% end %>
+						<% if u.teamlead_id == @tl.id %>
+							<td><%= u.username %> </td>
+						<% end %>
+					</tr>
 				<% end %>
 			</table>
-			<%= hidden_field_tag(:tid, @tl.id) %>
-			<%= submit_tag "Assign" %>
-		<% end %>
 	</div>
+</div>
 
 
 
