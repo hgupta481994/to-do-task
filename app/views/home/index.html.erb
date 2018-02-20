@@ -24,6 +24,7 @@
 					    	<% @tl= Teamlead.find_by_username(current_user.username) %>
 					    	<%if (t.teamlead_id == @tl.id) %> 
 						  		<tr>
+						  			
 						  			<td><%= check_box_tag "tasks_ids[]", t.id %></td>
 						  			<td><%=t.id%></td>
 							    	<td><%= t.name %>
